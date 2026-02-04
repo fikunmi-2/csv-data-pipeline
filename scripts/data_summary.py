@@ -48,8 +48,9 @@ def analyze_scores(file_path):
         return results
 
 # Call analyse scores function and display result
-path = "../data/sample_scores.csv"
+if __name__ == "__main__":
+    path = "../data/sample_scores.csv"
 
-analyzed_results = analyze_scores(path)
+    analyzed_results = analyze_scores(path)
 
-print(analyzed_results)
+    print(analyzed_results)
