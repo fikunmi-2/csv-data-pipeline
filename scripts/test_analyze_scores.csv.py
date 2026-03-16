@@ -1,4 +1,4 @@
-from scripts.data_summary import analyze_scores
+from scripts.data_analyzer import analyze_scores
 
 # Testing normal scores
 result = analyze_scores("../data/normal_scores.csv")
