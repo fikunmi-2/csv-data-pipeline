@@ -8,16 +8,7 @@ This project demonstrates how raw CSV data can be transformed into **reliable in
 
 ## Pipeline Flow
 
-CSV File
-↓
-file_cleaner
-↓
-data_analyzer
-↓
-data_formatter
-↓
-CLI Output
-
+CSV File -> file_cleaner -> data_analyzer -> data_formatter -> CLI Output
 
 Each stage has a **single responsibility**, making the pipeline easy to maintain and extend.
 
@@ -57,21 +48,6 @@ Excellent: Alice, Dana
 Good: Bob
 Needs Improvement: Charlie
 ```
-
-csv-data-pipeline
-│
-├── data/
-│   └── sample_data.csv
-│
-├── scripts/
-│   ├── file_cleaner.py
-│   ├── data_analyzer.py
-│   ├── data_formatter.py
-│   └── cli_tool.py
-│
-├── requirements.txt
-└── README.md
-
 ---
 
 ## Tech Stack
@@ -82,13 +58,13 @@ csv-data-pipeline
 
 ---
 
-### Setup
+## Setup
 
 Clone the repository and install dependencies:
 
-git clone https://github.com/fikunmi-2/csv-data-pipeline.git
-cd csv-data-pipeline
-pip install -r requirements.txt
+- git clone https://github.com/fikunmi-2/csv-data-pipeline.git
+- cd csv-data-pipeline
+- pip install -r requirements.txt
 
 ---
 
