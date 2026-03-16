@@ -47,7 +47,7 @@ def remove_empty_rows(df):
     df = df.dropna(axis=0, how="any")
 
     # Remove whitespaces around the names
-    df["name"] = df["name"].str.strip()
+    df.loc[:, "name"] = df["name"].str.strip()
 
     # Remove empty names
     df = df[df["name"] != ""]
