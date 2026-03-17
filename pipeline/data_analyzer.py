@@ -1,56 +1,63 @@
-import csv
+# This is the data_analyzer file that takes in formatted data from the file_cleaner and then makes statistical calculations
+# on the data and returns the result
 
-def analyze_scores(file_path):
-    """
-    Reads a CSV of names and scores and returns analysis results.
-    """
-    results = {}
-    with open(file_path, mode='r', newline='', encoding='utf-8') as csvfile:
-        records = csv.DictReader(csvfile)
-        first_record = True
+from file_cleaner import clean_file
+import pandas as pd
+import numpy as np
 
-        total_score = 0
-        count = 0
-        performance = {"Excellent": [], "Good": [], "Needs Improvement": []}
+def analyze_data(filename):
+    file_cleaner_result = clean_file(filename)
+    if file_cleaner_result["Status"] == "Failure":
+        return {
+            "Status": "Failure",
+            "Error": file_cleaner_result["Error"]
+        }
 
-        for record in records:
-            if first_record:
-                highest_score = float(record['score'])
-                lowest_score = float(record['score'])
-                first_record = False
-            score = float(record['score'])
-            if score > highest_score:
-                highest_score = score
-            if score < lowest_score:
-                lowest_score = score
+    df = file_cleaner_result["df"]
 
-            if score >= 85:
-                performance['Excellent'].append(record['name'])
-            elif 70 <= score < 85:
-                performance['Good'].append(record['name'])
-            else:
-                performance['Needs Improvement'].append(record['name'])
-            total_score += score
-            count += 1
+    result = {
+        "Status": "Success",
+        "file_cleaner_result": file_cleaner_result,
+        "data_analyzer_result": {}
+    }
 
-        if count == 0:
-            return {}
 
-        average_score = total_score / count
+    # If the data is empty, then it should return an empty data and not process any other information
+    if df.empty:
+        result["Status"] = "Failure"
+        result["Error"] = "Dataframe is empty. So no analysis could be performed."
+        return result
 
-        # Print Result of Calculation
-        results["highest"] = highest_score
-        results["lowest"] = lowest_score
-        results["average"] = average_score
+    # Merge the result of the statistics with our result so far
+    result["data_analyzer_result"].update(compute_statistics(df))
 
-        results["performance"] = performance
+    # Merge the result of the performance with our result so far
+    result["data_analyzer_result"].update(compute_performance(df))
 
-        return results
+    return result
 
-# Call analyse scores function and display result
-if __name__ == "__main__":
-    path = "../data/sample_scores.csv"
+# This function computes the highest, lowest and average score
+def compute_statistics(df):
+    return {
+        "Highest Score": float(df["score"].max()),
+        "Lowest Score": float(df["score"].min()),
+        "Average Score": float(df["score"].mean()),
+    }
 
-    analyzed_results = analyze_scores(path)
+def compute_performance(df):
+    # Put all the result categories to their corresponding records in the dataframe
+    df["performance"] = np.where((df["score"] >= 70) & (df["score"] < 85), "Good",
+                                 np.where(df["score"] >= 85, "Excellent", "Needs Improvement"))
 
-    print(analyzed_results)
+    return {
+        "Performance": {
+            "Excellent": df.loc[df["performance"] == "Excellent", "name"].tolist(),
+            "Good": df.loc[df["performance"] == "Good", "name"].tolist(),
+            "Needs Improvement": df.loc[df["performance"] == "Needs Improvement", "name"].tolist(),
+        }
+    }
+
+# Testing our data_analyzer
+result_test = analyze_data("../data/sample_data.csv")
+# result_test = analyze_data(1)
+print(result_test)

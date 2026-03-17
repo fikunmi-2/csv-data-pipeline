@@ -124,7 +124,3 @@ def clean_file(filename):
             result["df"] = df
 
     return result
-
-result_test = clean_file("../data/sample_data.csv")
-# result_test = clean_file(1)
-print(result_test)
