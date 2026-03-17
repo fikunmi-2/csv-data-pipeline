@@ -10,8 +10,15 @@ def analyze_data(filename):
 
     df = file_cleaner_result["df"]
 
-    result = {}
-    result.update(file_cleaner_result)
+    result = {
+        "Status": "Success",
+        "metadata": {
+            "rows_original": file_cleaner_result["rows_original"],
+            "rows_removed_missing": file_cleaner_result["rows_removed_missing"],
+            "rows_after_cleaning": file_cleaner_result["rows_after_cleaning"],
+            "rows_removed_invalid_scores": file_cleaner_result["rows_removed_invalid_scores"],
+        }
+    }
 
     # Merge the result of the statistics with our result so far
     result.update(compute_statistics(df))
