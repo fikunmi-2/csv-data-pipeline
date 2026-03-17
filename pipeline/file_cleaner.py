@@ -14,7 +14,7 @@ def load_csv_file(filename):
 
         if df.empty:
             result["Status"] = "Failure"
-            result["Error"] = "No data found"
+            result["Error"] = "No data found in file."
 
     except FileNotFoundError:
         result["Status"] = "Failure"
@@ -103,8 +103,9 @@ def clean_file(filename):
             result["rows_removed_missing"] = no_of_dropped_rows
 
             if df.empty:
+                result["Status"] = "Failure"
+                result["Error"] = "No valid data after cleaning."
                 result["rows_after_cleaning"] = total_rows_count - no_of_dropped_rows
-                result["df"] = pd.DataFrame()
                 return result
 
             # Ensure all the scores value is numeric
@@ -118,7 +119,8 @@ def clean_file(filename):
             result["rows_after_cleaning"] = total_rows_count - no_of_dropped_rows
 
             if df.empty:
-                result["df"] = pd.DataFrame()
+                result["Status"] = "Failure"
+                result["Error"] = "No valid data after cleaning."
                 return result
 
             result["df"] = df
