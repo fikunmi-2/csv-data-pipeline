@@ -1,0 +1,15 @@
+Statistics:
+- Highest Score: 90.00
+- Lowest Score: 24.00
+- Average Score: 68.40
+
+Performance:
+- Excellent: Charlie, Alice
+- Good: Alice
+- Needs Improvement: Bob, Charlie2
+
+Metadata:
+- Number of Rows (original): 7
+- Number of Rows Missing values: 1
+- Number of Rows with invalid scores: 1
+- Number of Rows (after cleaning): 5

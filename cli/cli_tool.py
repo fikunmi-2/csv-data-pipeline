@@ -16,7 +16,7 @@ def main():
    parser.add_argument("filename", type=str, help="Path to the input CSV file")
    parser.add_argument("-m", "--mode", default="human", choices=["human", "machine"],
                        help="Output Format: human-readable or machine-readable")
-   parser.add_argument("-o", "--output", type=str)
+   parser.add_argument("-o", "--output", type=str, help="Path to save output file")
 
    args = parser.parse_args()
 
@@ -27,20 +27,24 @@ def main():
        sys.exit(1)
 
    output = format_output(analyzed_data, mode=args.mode)
+   json_output = json.dumps(output, indent=2)
 
-   if args.mode == "machine":
-       data = json.dumps(output, indent=2)
-       if args.output is None:
-           print(data)
+   if args.output is None:
+       if args.mode == "machine":
+           print(json_output)
        else:
-           try:
-               with open(args.output, "w") as output_file:
-                   output_file.write(data)
-                   print(f"Wrote to '{args.output}'")
-           except Exception as e:
-               print(f"Error: {e}")
+           print(output)
    else:
-       print(output["result"])
+       try:
+           with open(args.output, "w", encoding="utf-8") as output_file:
+               if args.mode == "machine":
+                   output_file.write(json_output)
+               else:
+                   output_file.write(output)
+               print(f"Saved output to '{args.output}'")
+       except Exception as e:
+           print(f"Error: {e}")
+           sys.exit(1)
 
 if __name__ == "__main__":
     main()

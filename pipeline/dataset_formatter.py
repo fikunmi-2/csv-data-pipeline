@@ -4,14 +4,11 @@ def format_output(analyzed_result, mode="human"):
     if analyzed_result["Status"] == "Failure":
         return analyzed_result
     if mode == "human":
-        return {
-            "Status": "Success",
-            "result": "\n".join([
+        return "\n".join([
             format_statistics_human(analyzed_result['statistics']),
             format_performance_human(analyzed_result['performance']),
             format_metadata_human(analyzed_result['metadata']),
         ])
-        }
 
     elif mode == "machine":
         return {
