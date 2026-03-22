@@ -1,7 +1,7 @@
 # This is the data_analyzer file that takes in formatted data from the file_cleaner and then makes statistical calculations
 # on the data and returns the result
 
-from file_cleaner import clean_file
+from pipeline.file_cleaner import clean_file
 
 def analyze_data(filename):
     file_cleaner_result = clean_file(filename)

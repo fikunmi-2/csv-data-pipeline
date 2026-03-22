@@ -1,23 +1,26 @@
 # This is the dataset_formatter file that coverts the analysis in human_readable output.
 
-from data_analyzer import analyze_data
-
 def format_output(analyzed_result, mode="human"):
     if analyzed_result["Status"] == "Failure":
         return analyzed_result
     if mode == "human":
-        return "\n".join([
+        return {
+            "Status": "Success",
+            "result": "\n".join([
             format_statistics_human(analyzed_result['statistics']),
             format_performance_human(analyzed_result['performance']),
             format_metadata_human(analyzed_result['metadata']),
         ])
+        }
 
     elif mode == "machine":
         return {
             "Status": "Success",
-            "Statistics": format_statistics_machine(analyzed_result["statistics"]),
-            "Performance": format_performance_machine(analyzed_result["performance"]),
-            "Metadata": format_metadata_machine(analyzed_result["metadata"]),
+            "result": {
+                "Statistics": format_statistics_machine(analyzed_result["statistics"]),
+                "Performance": format_performance_machine(analyzed_result["performance"]),
+                "Metadata": format_metadata_machine(analyzed_result["metadata"]),
+            }
         }
     else:
         return {
@@ -65,10 +68,3 @@ def format_metadata_machine(metadata):
         "Number of Rows with invalid scores": metadata['rows_removed_invalid_scores'],
         "Number of Rows (after cleaning)": metadata['rows_after_cleaning'],
     }
-
-
-# Testing the data
-analyzed_result_test = analyze_data("../data/sample_data.csv")
-print(format_output(analyzed_result_test))
-print(format_output(analyzed_result_test, mode="machine"))
-print(format_output(analyzed_result_test, mode=""))
