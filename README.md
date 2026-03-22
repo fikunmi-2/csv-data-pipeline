@@ -26,9 +26,20 @@ Each stage has a **single responsibility**, making the pipeline easy to maintain
 - Modular pipeline architecture
 
 ---
+## CLI Input Structure
+
+### Without output File (prints to console) 
+```bash
+$ python -m cli.cli_tool data/sample_data.csv -m human
+$ python -m cli.cli_tool data/sample_data.csv -m machine
+```
+### With output file (saves result to a file)
+```bash
+$ python -m cli.cli_tool data/sample_data.csv -m human -o data/human_output.txt
+$ python -m cli.cli_tool data/sample_data.csv -m machine -o data/machine_output.json
+```
 
 ## Example Input
-
 ```csv
 name,score
 Alice,90
@@ -36,17 +47,48 @@ Bob,85
 Charlie,70
 Dana,92
 ```
+---
 
-## Example Output
-```csv
-Highest Score: 92
-Lowest Score: 70
-Average Score: 84.25
+## Example Human-Readable Output
+```txt
+Statistics:
+- Highest Score: 92.00
+- Lowest Score: 70.00
+- Average Score: 84.25
 
-Performance
-Excellent: Alice, Dana
-Good: Bob
-Needs Improvement: Charlie
+Performance:
+- Excellent: Alice, Dana
+- Good: Bob
+- Needs Improvement: Charlie
+
+Metadata:
+- Number of Rows (original): 4
+- Number of Rows Missing values: 0
+- Number of Rows with invalid scores: 0
+- Number of Rows (after cleaning): 4
+```
+
+## Example Machine Readable Output
+```json
+{
+  "Status": "Success",
+  "Statistics": {
+    "Highest Score": 92.0,
+    "Lowest Score": 70.0,
+    "Average Score": 84.25
+  },
+  "Performance": {
+    "Excellent": ["Alice", "Dana"],
+    "Good": ["Bob"],
+    "Needs Improvement": ["Charlie"]
+  },
+  "Metadata": {
+    "Number of Rows (original)": 4,
+    "Number of Rows Missing values": 0,
+    "Number of Rows with invalid scores": 0,
+    "Number of Rows (after cleaning)": 4
+  }
+}
 ```
 ---
 
@@ -55,16 +97,18 @@ Needs Improvement: Charlie
 - Python
 - NumPy
 - Pandas
+- Argparse
 
 ---
 
 ## Setup
 
 Clone the repository and install dependencies:
-
-- git clone https://github.com/fikunmi-2/csv-data-pipeline.git
-- cd csv-data-pipeline
-- pip install -r requirements.txt
+```bash
+$ git clone https://github.com/fikunmi-2/csv-data-pipeline.git
+$ cd csv-data-pipeline
+$ pip install -r requirements.txt
+```
 
 ---
 
@@ -76,12 +120,3 @@ This project was built to practice:
 - data validation pipelines
 - pandas data analysis
 - building simple CLI data tools
-
-
-
-
-
-
-
-
-
